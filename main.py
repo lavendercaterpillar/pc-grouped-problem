@@ -1,9 +1,38 @@
-def grouped(s):
-    pass
+from collections import defaultdict
+
+def grouped(words):
+    word_dict_list = list()
+    for word in words:
+        word_dict = defaultdict(int)
+
+        for char in word:
+            word_dict[char] += 1
+
+        word_dict_list.append(word_dict)
+
+    seen = set()
+    result = set()
+
+    for i in range(len(words)):
+        if i in seen:
+            continue
+
+        group = [words[i]]
+        seen.add(i)
+
+        for j in range(i+1, len(words)):
+            if word_dict_list[i] == word_dict_list[j]:
+                group.append(words[j])
+                seen.add(j)
+        
+        result.add(tuple(sorted(group)))
+
+    return result
 
 
 lst = ["eat", "tea", "tan", "ate", "nat", "bat"]
 answer_1 = set([("ate", "eat", "tea"), ("bat",), ("nat", "tan")])
+print(grouped(lst))
 assert grouped(lst) == answer_1
 
 lst = ["bored", "players", "sadder", "dreads", "robed", "parsley"]
