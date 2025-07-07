@@ -1,31 +1,52 @@
 from collections import defaultdict
 
-def grouped(words):
-    word_dict_list = list()
-    for word in words:
-        word_dict = defaultdict(int)
+# def grouped(words):
+#     word_dict_list = list()
+#     for word in words:
+#         word_dict = defaultdict(int)
 
-        for char in word:
-            word_dict[char] += 1
+#         for char in word:
+#             word_dict[char] += 1
 
-        word_dict_list.append(word_dict)
+#         word_dict_list.append(word_dict)
 
-    seen = set()
-    result = set()
+#     seen = set()
+#     result = set()
 
-    for i in range(len(words)):
-        if i in seen:
-            continue
+#     for i in range(len(words)):
+#         if i in seen:
+#             continue
 
-        group = [words[i]]
-        seen.add(i)
+#         group = [words[i]]
+#         seen.add(i)
 
-        for j in range(i+1, len(words)):
-            if word_dict_list[i] == word_dict_list[j]:
-                group.append(words[j])
-                seen.add(j)
+#         for j in range(i+1, len(words)):
+#             if word_dict_list[i] == word_dict_list[j]:
+#                 group.append(words[j])
+#                 seen.add(j)
         
+#         result.add(tuple(sorted(group)))
+
+#     return result
+
+# ************** refactored ******************
+# For Grouping use a dictionary with defaultdict(list)
+
+def grouped(words):
+    groups = defaultdict(list)
+
+    for word in words:
+        key = tuple(sorted(word))  # anagram key (Learn how to use tuple as key)
+        groups[key].append(word) 
+
+    # print(groups)
+
+    # Convert to set of sorted tuples for uniqueness and hashability
+    result = set()
+    for group in groups.values():
         result.add(tuple(sorted(group)))
+        
+    # result = {tuple(sorted(group)) for group in groups.values()}
 
     return result
 
